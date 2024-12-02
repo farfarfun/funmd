@@ -70,5 +70,5 @@ def to_pandas(table: str, header=None, *args, **kwargs) -> DataFrame:
     return pd.DataFrame(rows, columns=header)
 
 
-def from_pandas() -> str:
-    pass
+def from_pandas(df: DataFrame, index: bool = True, *args, **kwargs) -> str:
+    return df.to_markdown(index=index, *args, **kwargs)
