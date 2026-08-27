@@ -4,4 +4,7 @@ version = "0.1.2"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.8"
-dependencies = [ "funutil>=1.0.32",]
+dependencies = [ "funutil>=1.0.32", "pandas", "tabulate",]
+
+[dependency-groups]
+dev = [ "pytest",]
