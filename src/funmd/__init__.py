@@ -1,3 +1,3 @@
-from ._pandas import to_pandas, from_pandas
+from ._pandas import from_pandas, to_pandas
 
-__all__ = ["to_pandas", "from_pandas"]
+__all__ = ["from_pandas", "to_pandas"]

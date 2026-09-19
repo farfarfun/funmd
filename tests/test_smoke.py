@@ -1,9 +1,8 @@
-"""Lightweight smoke tests for the ``funmd`` package.
+"""``funmd`` 包的轻量冒烟测试。
 
-funmd is a tiny, dependency-light utility that converts between Markdown
-tables and pandas DataFrames. There is no network/DB/cloud access anywhere
-in the package, so these tests exercise the real code paths directly
-rather than mocking anything.
+funmd 是一个依赖很轻的小工具，用于在 Markdown 表格与 pandas DataFrame
+之间互相转换。包内不涉及任何网络/数据库/云存储访问，因此这些测试直接
+执行真实代码路径，无需 mock 任何东西。
 """
 
 import pandas as pd
@@ -11,7 +10,7 @@ import pytest
 
 
 def test_import_top_level_package():
-    """The top-level package must import cleanly."""
+    """顶层包必须能正常导入。"""
     import funmd
 
     assert hasattr(funmd, "to_pandas")
@@ -20,7 +19,7 @@ def test_import_top_level_package():
 
 
 def test_import_submodule():
-    """The internal ``_pandas`` submodule must import cleanly too."""
+    """内部的 ``_pandas`` 子模块同样必须能正常导入。"""
     from funmd import _pandas
 
     assert hasattr(_pandas, "to_pandas")
@@ -47,7 +46,7 @@ MARKDOWN_TABLE_PLUS_SEPARATOR = """
 
 
 def test_to_pandas_basic_table():
-    """A standard pipe-delimited Markdown table converts to a DataFrame."""
+    """标准的竖线分隔 Markdown 表格应能正确转换为 DataFrame。"""
     import funmd
 
     df = funmd.to_pandas(MARKDOWN_TABLE)
@@ -59,7 +58,7 @@ def test_to_pandas_basic_table():
 
 
 def test_to_pandas_with_explicit_header():
-    """An explicit header overrides any header row detected in the table."""
+    """显式指定的 header 应覆盖表格中检测到的表头行。"""
     import funmd
 
     body_only = """
@@ -73,7 +72,7 @@ def test_to_pandas_with_explicit_header():
 
 
 def test_from_pandas_roundtrip():
-    """DataFrame -> Markdown -> DataFrame should preserve the data."""
+    """DataFrame -> Markdown -> DataFrame 转换应保持数据不变。"""
     import funmd
 
     df = pd.DataFrame({"foo": ["1", "3"], "bar": ["2", "4"]})
@@ -83,14 +82,14 @@ def test_from_pandas_roundtrip():
     assert "foo" in markdown
     assert "bar" in markdown
 
-    # And it should be re-parseable by to_pandas.
+    # 转换出的 Markdown 也应能被 to_pandas 重新解析。
     df_roundtrip = funmd.to_pandas(markdown)
     assert list(df_roundtrip.columns) == ["foo", "bar"]
     assert df_roundtrip.shape == (2, 2)
 
 
 def test_is_header_helper():
-    """``_is_header`` recognizes Markdown table separator rows."""
+    """``_is_header`` 应能识别 Markdown 表格的分隔行。"""
     from funmd._pandas import _is_header
 
     assert _is_header(["---", "---"]) is True
@@ -100,7 +99,7 @@ def test_is_header_helper():
 
 
 def test_extract_line_helper():
-    """``_extract_line`` parses a single pipe-delimited row."""
+    """``_extract_line`` 应能解析单个竖线分隔的表格行。"""
     from funmd._pandas import _extract_line
 
     assert _extract_line("| foo | bar |", False) == (["foo", "bar"], False)
@@ -110,7 +109,7 @@ def test_extract_line_helper():
 
 
 def test_to_pandas_empty_table_returns_empty_dataframe():
-    """An empty/blank input should not raise, just yield an empty frame."""
+    """空白输入不应抛出异常，而是返回一个空的 DataFrame。"""
     import funmd
 
     df = funmd.to_pandas("")
@@ -119,11 +118,10 @@ def test_to_pandas_empty_table_returns_empty_dataframe():
 
 
 def test_no_cli_entry_points_declared():
-    """funmd currently ships no ``[project.scripts]`` CLI entry points.
+    """funmd 目前未提供任何 ``[project.scripts]`` CLI 入口点。
 
-    This is a documentation test: if a CLI is ever added, this test should
-    be replaced with one that invokes it (e.g. via ``--help``) rather than
-    silently passing.
+    这是一条文档性质的测试：如果未来新增了 CLI，应替换为真正调用它的测试
+    （例如通过 ``--help``），而不是继续静默跳过。
     """
     pytest.skip(
         "funmd 未在 pyproject.toml 的 [project.scripts] 中声明任何 CLI 入口点，"
