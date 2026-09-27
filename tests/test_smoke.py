@@ -57,6 +57,19 @@ def test_to_pandas_basic_table():
     assert df.iloc[1].tolist() == ["3", "4"]
 
 
+def test_to_pandas_plus_separator_via_public_api():
+    """公开的 to_pandas API 应能解析加号分隔风格。"""
+    import funmd
+
+    df = funmd.to_pandas(MARKDOWN_TABLE_PLUS_SEPARATOR)
+
+    assert list(df.columns) == ["foo", "bar"]
+    assert df.to_dict(orient="records") == [
+        {"foo": "1", "bar": "2"},
+        {"foo": "3", "bar": "4"},
+    ]
+
+
 def test_to_pandas_with_explicit_header():
     """显式指定的 header 应覆盖表格中检测到的表头行。"""
     import funmd
@@ -86,6 +99,31 @@ def test_from_pandas_roundtrip():
     df_roundtrip = funmd.to_pandas(markdown)
     assert list(df_roundtrip.columns) == ["foo", "bar"]
     assert df_roundtrip.shape == (2, 2)
+
+
+def test_from_pandas_empty_dataframe():
+    """空 DataFrame 也应能通过公开 API 转换为表格字符串。"""
+    import funmd
+
+    result = funmd.from_pandas(pd.DataFrame(columns=["foo", "bar"]), index=False)
+
+    assert isinstance(result, str)
+    assert "foo" in result
+    assert "bar" in result
+
+
+def test_from_pandas_includes_index_and_forwards_options():
+    """from_pandas 应保留索引选项并透传格式参数。"""
+    import funmd
+
+    result = funmd.from_pandas(
+        pd.DataFrame({"foo": ["value"]}, index=["row"]),
+        index=True,
+        tablefmt="plain",
+    )
+
+    assert "row" in result
+    assert "value" in result
 
 
 def test_is_header_helper():
