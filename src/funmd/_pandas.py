@@ -1,10 +1,11 @@
 import re
+from typing import Any
 
 import pandas as pd
 from pandas import DataFrame
 
 
-def _is_header(extracted: list[str], *args, **kwargs) -> bool:
+def _is_header(extracted: list[str], *args: Any, **kwargs: Any) -> bool:
     """判断一组单元格是否为 Markdown 表格的分隔行（如 ``---``、``:---:``）。
 
     Args:
@@ -27,7 +28,7 @@ def _is_header(extracted: list[str], *args, **kwargs) -> bool:
 
 
 def _extract_line(
-    line: str, possible_separator: bool, *args, **kwargs
+    line: str, possible_separator: bool, *args: Any, **kwargs: Any
 ) -> tuple[list[str], bool]:
     """解析 Markdown 表格中的一行，切分出单元格内容。
 
@@ -69,7 +70,7 @@ def _extract_line(
 
 
 def to_pandas(
-    table: str, header: list[str] | None = None, *args, **kwargs
+    table: str, header: list[str] | None = None, *args: Any, **kwargs: Any
 ) -> DataFrame:
     """将 Markdown 表格字符串转换为 pandas DataFrame。
 
@@ -96,7 +97,7 @@ def to_pandas(
     return pd.DataFrame(rows, columns=header)
 
 
-def from_pandas(df: DataFrame, index: bool = True, *args, **kwargs) -> str:
+def from_pandas(df: DataFrame, index: bool = True, *args: Any, **kwargs: Any) -> str:
     """将 pandas DataFrame 转换为 Markdown 表格字符串。
 
     Args:
