@@ -10,6 +10,14 @@ uv add funmd
 pip install funmd
 ```
 
+> `0.1.3` 发布前，PyPI 上的最新版本仍是 `0.1.2`：它的发布元数据没有声明
+> `pandas` / `tabulate`，装上后 `import funmd` 会报 `ModuleNotFoundError: pandas`。
+> 在此之前请直接从源码安装：
+>
+> ```bash
+> uv pip install "git+https://github.com/farfarfun/funmd.git"
+> ```
+
 ## 快速开始
 
 ```python
