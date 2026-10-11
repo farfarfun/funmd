@@ -6,9 +6,28 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 license-files = ["LICENSE"]
-authors = [{ name = "牛哥", email = "farfarfun@qq.com" }]
 dependencies = [ "pandas>=2.0", "tabulate>=0.9",]
 
+[[project.authors]]
+name = "牛哥"
+email = "niuliangtao@qq.com"
+
+[[project.authors]]
+name = "farfarfun"
+email = "farfarfun@qq.com"
+
+[[project.maintainers]]
+name = "牛哥"
+email = "niuliangtao@qq.com"
+
+[[project.maintainers]]
+name = "farfarfun"
+email = "farfarfun@qq.com"
+
+[project.urls]
+Organization = "https://github.com/farfarfun"
+Repository = "https://github.com/farfarfun/funmd"
+Releases = "https://github.com/farfarfun/funmd/releases"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
